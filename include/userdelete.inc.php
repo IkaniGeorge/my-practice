@@ -1,33 +1,31 @@
 <?php
-//how to update/add user data into db
+//how to delete user data in db
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $pwd = $_POST["pwd"];
-    $email = $_POST["email"];
 
     try {
         require_once "dbh.inc.php";
 
-        $query = "UPDATE users SET username = :username, 
-        pwd =:pwd, email = :email WHERE id = 5";
+        $query = "DELETE FROM users WHERE username = :username AND
+        pwd =:pwd;";
 
         $stmt = $pdo->prepare($query);
 
         $stmt->bindParam(":username", $username);
         $stmt->bindParam(":pwd", $pwd);
-        $stmt->bindParam(":email", $email);
 
         $stmt->execute();
 
         $pdo = null;
         $stmt = null;
 
-        header("Location: ../userupdate.php");
+        header("Location: ../userdelete.php");
         die(); 
     } catch (PDOException $e) {
         die("querry failed:" . $e->getMessage);
     }
 }    else{
-        header("Location: ../userupdate.php");
+        header("Location: ../userdelete.php");
 
     }
